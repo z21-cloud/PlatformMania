@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using PlatfromMania.Managers;
 
 namespace PlatfromMania.Core
 {
@@ -9,10 +10,11 @@ namespace PlatfromMania.Core
         private float movement = 0;
         private bool isJumping = false;
         private bool isShooting = false;
-        private SpriteRenderer characterSprite;
+        private bool isFacingRight = true;
+
         void Start()
         {
-            characterSprite = GetComponent<SpriteRenderer>();
+
         }
 
         // Update is called once per frame
@@ -31,7 +33,13 @@ namespace PlatfromMania.Core
         private void UpdateSpriteFlip()
         {
             if (movement == 0) return;
-            characterSprite.flipX = movement < 0;
+            if(isFacingRight && movement < 0 || !isFacingRight && movement > 0)
+            {
+                isFacingRight = !isFacingRight;
+                Vector3 ls = transform.localScale;
+                ls.x *= -1f;
+                transform.localScale = ls;
+            }
         }
 
         private void HandleInput()

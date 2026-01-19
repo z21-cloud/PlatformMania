@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using PlatfromMania.Managers;
 
 namespace PlatfromMania.Core
 {
@@ -18,14 +19,21 @@ namespace PlatfromMania.Core
         [Header("Проверка земли")]
         [SerializeField] private Transform groundCheck;
         [SerializeField] private float groundCheckRadius = 0.2f;
-        [SerializeField] private LayerMask groundMask;
+        [SerializeField] private LayerMask groundLayer;
 
         [Header("Скольжение по стене")]
         [SerializeField] private Transform wallCheck;
-        [SerializeField] private float wallCheckDistance = 0.3f;
+        [SerializeField] private Vector2 wallCheckSize = new Vector2(0.49f, 0.03f);
+        [SerializeField] private LayerMask wallLayer;
         [SerializeField] private float wallSlideSpeed = 2f;
 
+        [Header("Настройки гравитации")]
+        [SerializeField] private float baseGravity = 2f;
+        [SerializeField] private float maxFallSpeed = 18f;
+        [SerializeField] private float fallSpeedMultiplier = 2f;
+
         private Rigidbody2D rb;
+        private float movement;
         private bool isGrounded;
         private bool wasGrounded;
         private bool isWallSliding;
@@ -39,17 +47,17 @@ namespace PlatfromMania.Core
         void Update()
         {
             CheckGround();
-            CheckWallSlide();
+            HandleGravity();
+            HandleWallSlide();
             MoveHorizontal();
             Jump();
-            ApplyWallSlide();
         }
 
         private void CheckGround()
         {
-            isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundMask);
+            isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
 
-            if(isGrounded && !wasGrounded)
+            if (isGrounded && !wasGrounded)
             {
                 jumpsRemaining = maxJumps;
             }
@@ -57,16 +65,27 @@ namespace PlatfromMania.Core
             wasGrounded = isGrounded;
         }
 
-        private void CheckWallSlide()
+        private void HandleGravity()
         {
-            float movement = InputManager.Instance.GetHorizontalMovement();
-
-            if (!isGrounded && movement != 0 && rb.linearVelocityY == 0)
+            if (rb.linearVelocityY < 0)
             {
-                Vector2 direction = new Vector2(Mathf.Sin(movement), 0);
-                RaycastHit2D hit = Physics2D.Raycast(wallCheck.position, direction, wallCheckDistance, groundMask);
-                Debug.Log(hit.collider.name);
-                isWallSliding = hit.collider != null;
+                rb.gravityScale = baseGravity * fallSpeedMultiplier;
+                rb.linearVelocity = new Vector2(rb.linearVelocityX, Mathf.Max(rb.linearVelocityY, -maxFallSpeed));
+            }
+            else
+            {
+                rb.gravityScale = baseGravity;
+            }
+        }
+
+        private bool WallCheck() => (Physics2D.OverlapBox(wallCheck.position, wallCheckSize, 0, groundLayer));
+
+        private void HandleWallSlide()
+        {
+            if(!isGrounded && WallCheck() && movement != 0)
+            {
+                isWallSliding = true;
+                rb.linearVelocity = new Vector2(rb.linearVelocityX, Mathf.Max(rb.linearVelocityY, -wallSlideSpeed));
             }
             else
             {
@@ -76,7 +95,7 @@ namespace PlatfromMania.Core
 
         private void MoveHorizontal()
         {
-            float movement = InputManager.Instance.GetHorizontalMovement();
+            movement = InputManager.Instance.GetHorizontalMovement();
             rb.linearVelocityX = movement * speed;
         }
 
@@ -87,14 +106,6 @@ namespace PlatfromMania.Core
             {
                 rb.linearVelocityY = jumpHeight;
                 jumpsRemaining--;
-            }
-        }
-
-        private void ApplyWallSlide()
-        {
-            if(isWallSliding)
-            {
-                rb.linearVelocityY = Math.Max(rb.linearVelocityY, -jumpHeight / wallSlideSpeed);
             }
         }
 
@@ -111,8 +122,7 @@ namespace PlatfromMania.Core
             {
                 // Синяя линия - проверка стены сбоку (вправо и влево)
                 Gizmos.color = Color.blue;
-                Gizmos.DrawLine(wallCheck.position, wallCheck.position + Vector3.right * wallCheckDistance);
-                Gizmos.DrawLine(wallCheck.position, wallCheck.position + Vector3.left * wallCheckDistance);
+                Gizmos.DrawWireCube(wallCheck.position, wallCheckSize);
             }
         }
     }

@@ -35123,7 +35123,7 @@ Transform:
   m_GameObject: {fileID: 451136088}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.06, y: -0.125, z: 0}
+  m_LocalPosition: {x: 0.251, y: -0.074, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -35141,6 +35141,7 @@ GameObject:
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
   - component: {fileID: 519420030}
+  - component: {fileID: 519420033}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -35266,6 +35267,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &519420033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98a15f6d2314f444aa3770a6faf3162c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  followSpeed: 5
+  offset: {x: 1.25, y: 2.75}
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -35362,6 +35377,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: MaBoy Player
       objectReference: {fileID: 0}
+    - target: {fileID: 1780062837497999358, guid: f7627ebc728be3344a836408dc61a9e9, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 5432460421436890299, guid: f7627ebc728be3344a836408dc61a9e9, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: facd933a5d7b2aa48ac651690a39f51d, type: 2}
     - target: {fileID: 5441541674835257378, guid: f7627ebc728be3344a836408dc61a9e9, type: 3}
       propertyPath: m_LocalPosition.x
       value: -7.6235166
@@ -35442,16 +35465,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
-  jumpHeight: 5
+  jumpHeight: 8.5
   maxJumps: 2
   groundCheck: {fileID: 1791973190}
   groundCheckRadius: 0.2
-  groundMask:
+  groundLayer:
     serializedVersion: 2
     m_Bits: 64
   wallCheck: {fileID: 451136089}
-  wallCheckDistance: 0.5
-  wallSlideSpeed: 10
+  wallCheckSize: {x: 0.04, y: 0.76}
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  wallSlideSpeed: 2
+  baseGravity: 2
+  maxFallSpeed: 18
+  fallSpeedMultiplier: 2
 --- !u!114 &624592995
 MonoBehaviour:
   m_ObjectHideFlags: 0
