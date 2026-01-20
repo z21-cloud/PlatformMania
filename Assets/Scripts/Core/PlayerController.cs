@@ -12,9 +12,11 @@ namespace PlatfromMania.Core
         private bool isShooting = false;
         private bool isFacingRight = true;
 
+        private Animator anim;
+
         void Start()
         {
-
+            anim = GetComponent<Animator>();
         }
 
         // Update is called once per frame
@@ -22,6 +24,9 @@ namespace PlatfromMania.Core
         {
             HandleInput();
             UpdateSpriteFlip();
+            MovementAnimation();
+            JumpAnimation();
+            FallingAnimation();
 
             /*
              * if movement == 0 => speed = 0
@@ -40,6 +45,27 @@ namespace PlatfromMania.Core
                 ls.x *= -1f;
                 transform.localScale = ls;
             }
+        }
+
+        private void MovementAnimation()
+        {
+            if(movement != 0) 
+                anim.SetBool("isMoving", true);
+            else
+                anim.SetBool("isMoving", false);
+        }
+
+        private void JumpAnimation()
+        {
+            if (isJumping)
+                anim.SetBool("isJumping", true);
+            else
+                anim.SetBool("isJumping", false);
+        }
+
+        private void FallingAnimation()
+        {
+
         }
 
         private void HandleInput()
