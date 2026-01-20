@@ -24,11 +24,6 @@ namespace PlatfromMania.Core
         [SerializeField] private WallCheck wallCheck;
         [SerializeField] private float wallSlideSpeed = 2f;
 
-        [Header("Настройки гравитации")]
-        [SerializeField] private float baseGravity = 2f;
-        [SerializeField] private float maxFallSpeed = 18f;
-        [SerializeField] private float fallSpeedMultiplier = 2f;
-
         private Rigidbody2D rb;
         private float movement;
         private bool wasGrounded;
@@ -42,34 +37,16 @@ namespace PlatfromMania.Core
 
         void Update()
         {
-            HandleGravity();
-            HandleWallSlide();
             MoveHorizontal();
-            UpdateJumps();
+            HandleWallSlide();
+            ReadyToJump();
             Jump();
         }
 
-        private void UpdateJumps()
+        private void MoveHorizontal()
         {
-            if (groundCheck.IsGrounded && !wasGrounded)
-            {
-                jumpsRemaining = maxJumps;
-            }
-
-            wasGrounded = groundCheck.IsGrounded;
-        }
-
-        private void HandleGravity()
-        {
-            if (rb.linearVelocityY < 0)
-            {
-                rb.gravityScale = baseGravity * fallSpeedMultiplier;
-                rb.linearVelocity = new Vector2(rb.linearVelocityX, Mathf.Max(rb.linearVelocityY, -maxFallSpeed));
-            }
-            else
-            {
-                rb.gravityScale = baseGravity;
-            }
+            movement = InputManager.Instance.GetHorizontalMovement();
+            rb.linearVelocityX = movement * speed;
         }
 
         private void HandleWallSlide()
@@ -85,10 +62,14 @@ namespace PlatfromMania.Core
             }
         }
 
-        private void MoveHorizontal()
+        private void ReadyToJump()
         {
-            movement = InputManager.Instance.GetHorizontalMovement();
-            rb.linearVelocityX = movement * speed;
+            if (groundCheck.IsGrounded && !wasGrounded)
+            {
+                jumpsRemaining = maxJumps;
+            }
+
+            wasGrounded = groundCheck.IsGrounded;
         }
 
         private void Jump()
