@@ -2,13 +2,19 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using PlatfromMania.Managers;
+using PlatfromMania.Core;
+using PlatfromMania.Services;
 
 public class PlayerAnimationController : MonoBehaviour
 {
+    [Header("Checkers")]
+    [SerializeField] private GroundCheck groundCheck;
+    [SerializeField] private WallCheck wallCheck;
     private Animator anim;
     private float movement = 0f;
     private bool isJumping = false;
     private bool isShooting = false;
+    private bool isFalling = false;
 
     void Start()
     {
@@ -42,7 +48,16 @@ public class PlayerAnimationController : MonoBehaviour
 
     private void FallingAnimation()
     {
+        //isFalling = !groundCheck.IsGrounded && !wallCheck.IsWallSliding;
+        if (isFalling)
+            anim.SetBool("isFalling", true);
+        else
+            anim.SetBool("isFalling", false);
+    }
 
+    public void SetFallValue(bool value)
+    {
+        isFalling = value;
     }
 
     private void HandleInput()
