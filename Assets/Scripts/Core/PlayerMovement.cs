@@ -31,13 +31,14 @@ namespace PlatfromMania.Core
         private float wallJumpTime = 0.5f;
         private float wallJumpTimer;
 
-        [Header("Player Animation Controller")]
-        [SerializeField] private PlayerAnimationController playerAnimController;
-
         private Rigidbody2D rb;
         private float movement;
         private bool wasGrounded;
         private bool isWallSliding;
+        private bool isFalling;
+
+        public event Action<bool> OnFallingChanged;
+        public event Action<float> OnSpriteFliped;
 
         private void Start()
         {
@@ -47,17 +48,20 @@ namespace PlatfromMania.Core
 
         void Update()
         {
-            MoveHorizontal();
             HandleWallSlide();
             ProcessWallJump();
             ReadyToJump();
             Jump();
             Falling();
+
+            if (isWallJumping) return;
+            MoveHorizontal();
         }
 
         private void MoveHorizontal()
         {
             movement = InputManager.Instance.GetHorizontalMovement();
+            OnSpriteFliped?.Invoke(movement);
             rb.linearVelocityX = movement * speed;
         }
 
@@ -95,11 +99,16 @@ namespace PlatfromMania.Core
 
             if(jumping && wallJumpTimer > 0f)
             {
-                isWallJumping = true;
+                isWallJumping = true; //player jumped from the wall
                 rb.linearVelocity = new Vector2(wallJumpDirection * wallJumpPower.x, wallJumpPower.y);
                 wallJumpTimer = 0;
 
-                Invoke(nameof(CancelWallJump), wallJumpTime + 0.1f);
+                if(transform.localScale.x != wallJumpDirection)
+                {
+                    OnSpriteFliped?.Invoke(wallJumpDirection);
+                }
+
+                Invoke(nameof(CancelWallJump), wallJumpTime + 0.1f); //delay before next jump
             }
         }
 
@@ -107,7 +116,7 @@ namespace PlatfromMania.Core
         {
             if(isWallSliding)
             {
-                isWallJumping = false;
+                isWallJumping = false; //update direction after jumping
                 wallJumpDirection = -transform.localScale.x;
                 wallJumpTimer = wallJumpTime;
 
@@ -121,14 +130,14 @@ namespace PlatfromMania.Core
 
         private void Falling()
         {
-            if(rb.linearVelocityY < 0 && !groundCheck.IsGrounded && !wallCheck.IsWallSliding)
-            {
-                playerAnimController.SetFallValue(true);
-            }
-            else
-            {
-                playerAnimController.SetFallValue(false);
-            }
+            bool newValue = rb.linearVelocityY < 0 &&
+                            !groundCheck.IsGrounded &&
+                            !wallCheck.IsWallSliding;
+
+            if (newValue == isFalling) return;
+
+            isFalling = newValue;
+            OnFallingChanged?.Invoke(newValue);
         }
 
         private void CancelWallJump()
