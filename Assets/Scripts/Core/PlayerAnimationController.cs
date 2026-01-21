@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using PlatfromMania.Managers;
+using System;
 
 namespace PlatfromMania.Core
 {
@@ -12,12 +13,25 @@ namespace PlatfromMania.Core
 
         private Animator anim;
         private float movement = 0f;
-        private float yVelocity = 0f;
         private bool isShooting = false;
+        private bool isJumping = false;
+        private bool isFalling = false;
+
 
         private void OnEnable()
         {
-            playerMovement.OnYVelocityChanged += ChangeYVelocity;
+            playerMovement.OnPlayerFalling += Falling;
+            playerMovement.OnPlayerJumped += Jumping;
+        }
+
+        private void Jumping(bool value)
+        {
+            isJumping = value;
+        }
+
+        private void Falling(bool value)
+        {
+            isFalling = value;
         }
 
         void Start()
@@ -44,23 +58,18 @@ namespace PlatfromMania.Core
 
         private void JumpAnimation()
         {
-            if (yVelocity > 0)
-                anim.SetFloat("yVelocity", 1);
+            if (isJumping)
+                anim.SetBool("isJumping", true);
             else
-                anim.SetFloat("yVelocity", 0);
+                anim.SetBool("isJumping", false);
         }
 
         private void FallingAnimation()
         {
-            if (yVelocity < 0)
-                anim.SetFloat("yVelocity", -1);
+            if (isFalling)
+                anim.SetBool("isFalling", true);
             else
-                anim.SetFloat("yVelocity", 0);
-        }
-
-        private void ChangeYVelocity(float value)
-        {
-            yVelocity = value;
+                anim.SetBool("isFalling", false);
         }
 
         private void HandleInput()
@@ -71,7 +80,8 @@ namespace PlatfromMania.Core
 
         private void OnDisable()
         {
-            playerMovement.OnYVelocityChanged -= ChangeYVelocity;
+            playerMovement.OnPlayerFalling -= Falling;
+            playerMovement.OnPlayerJumped -= Jumping;
         }
     }
 }

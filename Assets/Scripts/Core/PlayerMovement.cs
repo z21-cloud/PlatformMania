@@ -45,8 +45,9 @@ namespace PlatfromMania.Core
         private bool isFalling;
         private bool isGrounded;
 
-        public event Action<float> OnYVelocityChanged;
         public event Action<float> OnSpriteFliped;
+        public event Action<bool> OnPlayerJumped;
+        public event Action<bool> OnPlayerFalling;
 
         private void Start()
         {
@@ -124,8 +125,8 @@ namespace PlatfromMania.Core
             if (jumping && jumpsRemaining > Mathf.Epsilon)
             {
                 rb.linearVelocityY = jumpHeight;
-                OnYVelocityChanged?.Invoke(rb.linearVelocityY);
                 jumpsRemaining--;
+                OnPlayerJumped.Invoke(jumping);
             }
 
             if(jumping && wallJumpTimer > Mathf.Epsilon)
@@ -139,9 +140,10 @@ namespace PlatfromMania.Core
                     OnSpriteFliped?.Invoke(wallJumpDirection);
                 }
 
-                OnYVelocityChanged?.Invoke(rb.linearVelocityY);
                 Invoke(nameof(CancelWallJump), wallJumpTime + 0.1f); //delay before next jump
             }
+
+            OnPlayerJumped?.Invoke(jumping);
         }
 
         private void Falling()
@@ -153,7 +155,7 @@ namespace PlatfromMania.Core
             if (newValue == isFalling) return;
 
             isFalling = newValue;
-            OnYVelocityChanged?.Invoke(rb.linearVelocityY);
+            OnPlayerFalling?.Invoke(isFalling);
         }
 
         private void MoveHorizontal()
