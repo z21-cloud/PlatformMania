@@ -12,13 +12,12 @@ namespace PlatfromMania.Core
 
         private Animator anim;
         private float movement = 0f;
-        private bool isJumping = false;
+        private float yVelocity = 0f;
         private bool isShooting = false;
-        private bool isFalling = false;
 
         private void OnEnable()
         {
-            playerMovement.OnFallingChanged += SetFallValue;
+            playerMovement.OnYVelocityChanged += ChangeYVelocity;
         }
 
         void Start()
@@ -45,35 +44,34 @@ namespace PlatfromMania.Core
 
         private void JumpAnimation()
         {
-            if (isJumping)
-                anim.SetBool("isJumping", true);
+            if (yVelocity > 0)
+                anim.SetFloat("yVelocity", 1);
             else
-                anim.SetBool("isJumping", false);
+                anim.SetFloat("yVelocity", 0);
         }
 
         private void FallingAnimation()
         {
-            if (isFalling)
-                anim.SetBool("isFalling", true);
+            if (yVelocity < 0)
+                anim.SetFloat("yVelocity", -1);
             else
-                anim.SetBool("isFalling", false);
+                anim.SetFloat("yVelocity", 0);
         }
 
-        private void SetFallValue(bool value)
+        private void ChangeYVelocity(float value)
         {
-            isFalling = value;
+            yVelocity = value;
         }
 
         private void HandleInput()
         {
             movement = InputManager.Instance.GetHorizontalMovement();
-            isJumping = InputManager.Instance.GetJump();
             isShooting = InputManager.Instance.GetMouseButton();
         }
 
         private void OnDisable()
         {
-            playerMovement.OnFallingChanged -= SetFallValue;
+            playerMovement.OnYVelocityChanged -= ChangeYVelocity;
         }
     }
 }

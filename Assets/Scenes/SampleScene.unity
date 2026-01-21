@@ -35446,15 +35446,9 @@ PrefabInstance:
       addedObject: {fileID: 624593002}
     - targetCorrespondingSourceObject: {fileID: 1780062837497999358, guid: f7627ebc728be3344a836408dc61a9e9, type: 3}
       insertIndex: 6
-      addedObject: {fileID: 624593001}
-    - targetCorrespondingSourceObject: {fileID: 1780062837497999358, guid: f7627ebc728be3344a836408dc61a9e9, type: 3}
-      insertIndex: 7
-      addedObject: {fileID: 624593000}
-    - targetCorrespondingSourceObject: {fileID: 1780062837497999358, guid: f7627ebc728be3344a836408dc61a9e9, type: 3}
-      insertIndex: 8
       addedObject: {fileID: 624593003}
     - targetCorrespondingSourceObject: {fileID: 1780062837497999358, guid: f7627ebc728be3344a836408dc61a9e9, type: 3}
-      insertIndex: 9
+      insertIndex: 7
       addedObject: {fileID: 624592995}
   m_SourcePrefab: {fileID: 100100000, guid: f7627ebc728be3344a836408dc61a9e9, type: 3}
 --- !u!1 &624592988 stripped
@@ -35482,10 +35476,18 @@ MonoBehaviour:
   speed: 5
   jumpHeight: 8.5
   maxJumps: 2
-  groundCheck: {fileID: 624593000}
-  wallCheck: {fileID: 624593001}
+  groundCheckTransform: {fileID: 1791973190}
+  groundCheckRadius: 0.2
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  wallCheckTransform: {fileID: 451136089}
+  wallCheckSize: {x: 0.07, y: 0.69}
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 64
   wallSlideSpeed: 2
-  wallJumpPower: {x: 5, y: 10}
+  wallJumpPower: {x: 2, y: 10}
 --- !u!114 &624592995
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35498,40 +35500,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3994da78c1f12f94094ffd37f2e486ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &624593000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 624592988}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8b60801d874f5d46b18029b90e2732f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  groundCheck: {fileID: 1791973190}
-  groundCheckRadius: 0.2
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 64
---- !u!114 &624593001
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 624592988}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63de1c6fb14b8b946b5351d6788dcd0b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  wallCheck: {fileID: 451136089}
-  wallCheckSize: {x: 0.07, y: 0.76}
-  wallLayer:
-    serializedVersion: 2
-    m_Bits: 64
 --- !u!114 &624593002
 MonoBehaviour:
   m_ObjectHideFlags: 0

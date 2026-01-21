@@ -18,10 +18,14 @@ namespace PlatfromMania.Core
         private int jumpsRemaining;
 
         [Header("Ground check")]
-        [SerializeField] private GroundCheck groundCheck;
+        [SerializeField] private Transform groundCheckTransform;
+        [SerializeField] private float groundCheckRadius = 0.2f;
+        [SerializeField] private LayerMask groundLayer;
 
         [Header("Wall sliding")]
-        [SerializeField] private WallCheck wallCheck;
+        [SerializeField] private Transform wallCheckTransform;
+        [SerializeField] private Vector2 wallCheckSize = new Vector2(0.49f, 0.03f);
+        [SerializeField] private LayerMask wallLayer;
         [SerializeField] private float wallSlideSpeed = 2f;
 
         [Header("Wall Jumping")]
@@ -31,23 +35,40 @@ namespace PlatfromMania.Core
         private float wallJumpTime = 0.5f;
         private float wallJumpTimer;
 
+        private GroundCheckService groundCheckService;
+        private WallCheckService wallCheckService;
         private Rigidbody2D rb;
         private float movement;
         private bool wasGrounded;
         private bool isWallSliding;
+        private bool isTouchingWall;
         private bool isFalling;
+        private bool isGrounded;
 
-        public event Action<bool> OnFallingChanged;
+        public event Action<float> OnYVelocityChanged;
         public event Action<float> OnSpriteFliped;
 
         private void Start()
         {
+            groundCheckService = new GroundCheckService();
+            wallCheckService = new WallCheckService();
             rb = GetComponent<Rigidbody2D>();
             jumpsRemaining = maxJumps;
         }
 
         void Update()
         {
+            isGrounded = groundCheckService.Check(
+                groundCheckTransform.position, 
+                groundCheckRadius, 
+                groundLayer);
+
+            isTouchingWall = wallCheckService.Check(
+                wallCheckTransform.position, 
+                wallCheckSize, 
+                0, 
+                wallLayer);
+
             HandleWallSlide();
             ProcessWallJump();
             ReadyToJump();
@@ -58,16 +79,9 @@ namespace PlatfromMania.Core
             MoveHorizontal();
         }
 
-        private void MoveHorizontal()
-        {
-            movement = InputManager.Instance.GetHorizontalMovement();
-            OnSpriteFliped?.Invoke(movement);
-            rb.linearVelocityX = movement * speed;
-        }
-
         private void HandleWallSlide()
         {
-            if(!groundCheck.IsGrounded && wallCheck.IsWallSliding && movement != 0)
+            if(!isGrounded && isTouchingWall && movement != Mathf.Epsilon)
             {
                 isWallSliding = true;
                 rb.linearVelocity = new Vector2(rb.linearVelocityX, Mathf.Max(rb.linearVelocityY, -wallSlideSpeed));
@@ -78,26 +92,43 @@ namespace PlatfromMania.Core
             }
         }
 
+        private void ProcessWallJump()
+        {
+            if (isWallSliding)
+            {
+                isWallJumping = false; //update direction after jumping
+                wallJumpDirection = -transform.localScale.x;
+                wallJumpTimer = wallJumpTime;
+
+                CancelInvoke(nameof(CancelWallJump));
+            }
+            else if (wallJumpTimer > Mathf.Epsilon)
+            {
+                wallJumpTimer -= Time.deltaTime;
+            }
+        }
+
         private void ReadyToJump()
         {
-            if (groundCheck.IsGrounded && !wasGrounded)
+            if (isGrounded && !wasGrounded)
             {
                 jumpsRemaining = maxJumps;
             }
 
-            wasGrounded = groundCheck.IsGrounded;
+            wasGrounded = isGrounded;
         }
 
         private void Jump()
         {
             bool jumping = InputManager.Instance.GetJump();
-            if (jumping && jumpsRemaining > 0)
+            if (jumping && jumpsRemaining > Mathf.Epsilon)
             {
                 rb.linearVelocityY = jumpHeight;
+                OnYVelocityChanged?.Invoke(rb.linearVelocityY);
                 jumpsRemaining--;
             }
 
-            if(jumping && wallJumpTimer > 0f)
+            if(jumping && wallJumpTimer > Mathf.Epsilon)
             {
                 isWallJumping = true; //player jumped from the wall
                 rb.linearVelocity = new Vector2(wallJumpDirection * wallJumpPower.x, wallJumpPower.y);
@@ -108,41 +139,46 @@ namespace PlatfromMania.Core
                     OnSpriteFliped?.Invoke(wallJumpDirection);
                 }
 
+                OnYVelocityChanged?.Invoke(rb.linearVelocityY);
                 Invoke(nameof(CancelWallJump), wallJumpTime + 0.1f); //delay before next jump
-            }
-        }
-
-        private void ProcessWallJump()
-        {
-            if(isWallSliding)
-            {
-                isWallJumping = false; //update direction after jumping
-                wallJumpDirection = -transform.localScale.x;
-                wallJumpTimer = wallJumpTime;
-
-                CancelInvoke(nameof(CancelWallJump));
-            }
-            else if(wallJumpTimer > 0f)
-            {
-                wallJumpTimer -= Time.deltaTime;
             }
         }
 
         private void Falling()
         {
-            bool newValue = rb.linearVelocityY < 0 &&
-                            !groundCheck.IsGrounded &&
-                            !wallCheck.IsWallSliding;
+            bool newValue = rb.linearVelocityY < Mathf.Epsilon &&
+                            !isGrounded &&
+                            !isTouchingWall;
 
             if (newValue == isFalling) return;
 
             isFalling = newValue;
-            OnFallingChanged?.Invoke(newValue);
+            OnYVelocityChanged?.Invoke(rb.linearVelocityY);
+        }
+
+        private void MoveHorizontal()
+        {
+            movement = InputManager.Instance.GetHorizontalMovement();
+            OnSpriteFliped?.Invoke(movement);
+            rb.linearVelocityX = movement * speed;
         }
 
         private void CancelWallJump()
         {
             isWallJumping = false;
+        }
+
+        private void OnDrawGizmos()
+        {
+            GroundCheckService.DrawDebugCircle(
+                groundCheckTransform.position,
+                groundCheckRadius,
+                isGrounded ? Color.green : Color.red);
+
+            WallCheckService.DrawDebugCircle(
+                wallCheckTransform.position,
+                wallCheckSize,
+                isTouchingWall ? Color.blue : Color.red);
         }
     }
 }

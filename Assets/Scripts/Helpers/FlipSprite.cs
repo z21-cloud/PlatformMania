@@ -9,6 +9,7 @@ namespace PlatfromMania.Helpers
     {
         [Header("Player Movement Checker")]
         [SerializeField] private PlayerMovement movement;
+        
         private bool isFacingRight = true;
 
         private void OnEnable()
