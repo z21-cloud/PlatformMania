@@ -22,6 +22,7 @@ namespace PlatfromMania.Managers
         }
 
         public float GetHorizontalMovement() => Input.GetAxisRaw("Horizontal");
+        public float GetVerticalMovement() => Input.GetAxisRaw("Vertical");
         public bool GetJump() => Input.GetKeyDown(KeyCode.Space);
         public bool GetMouseButton() => Input.GetMouseButtonDown(leftMouseButton);
     }
