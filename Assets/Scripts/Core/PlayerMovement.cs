@@ -50,6 +50,7 @@ namespace PlatfromMania.Core
 
         private const float MOVEMENT_THRESHOLD = 0.01f;
         private const float VELOCITY_THRESHOLD = 0.1f;
+        private const float JUMP_DELAY = 0.1f;
 
         private float horizontalMovement;
         
@@ -191,7 +192,7 @@ namespace PlatfromMania.Core
                 wallJumpsRemaining--;
                 didJump = true;
 
-                Invoke(nameof(CancelWallJump), wallJumpTime + 0.1f); //delay before next jump
+                Invoke(nameof(CancelWallJump), wallJumpTime + JUMP_DELAY); //delay before next jump
             }
 
             if(didJump)
