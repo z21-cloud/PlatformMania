@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace PlatfromMania.Core
+namespace PlatfromMania.Helpers
 {
     public class ObjectPooling<T> where T : MonoBehaviour
     {

@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using PlatfromMania.Helpers;
 
 namespace PlatfromMania.Core
 {

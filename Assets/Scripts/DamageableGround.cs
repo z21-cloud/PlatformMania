@@ -1,12 +1,17 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using PlatfromMania.Core;
 
-public class DamageableGround : MonoBehaviour, IDamageable
+namespace PlatfromMania.Helpers
 {
-    public void TakeDamage(float damage)
+    public class DamageableGround : MonoBehaviour, IDamageable
     {
-        Debug.Log("Bullet destroyed");
-        //effects
+        public void TakeDamage(float damage)
+        {
+            Debug.Log("Bullet destroyed");
+            //effects
+        }
     }
 }
+
