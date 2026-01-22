@@ -7,8 +7,6 @@ namespace PlatfromMania.Core
     public interface IDamageable
     {
         public void TakeDamage(float damage);
-        public float CurrentHealth { get; }
-        bool IsAlive { get; }
     }
 }
 

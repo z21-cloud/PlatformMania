@@ -5,8 +5,12 @@ using System.Collections.Generic;
 
 namespace PlatfromMania.Core
 {
-    public class Enemy : MonoBehaviour, IDamageable
+    public class Enemy : MonoBehaviour
     {
+        public float CurrentHealth => throw new System.NotImplementedException();
+
+        public bool IsAlive => throw new System.NotImplementedException();
+
         void Start()
         {
 
