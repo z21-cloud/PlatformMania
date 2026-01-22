@@ -13,7 +13,6 @@ namespace PlatfromMania.Core
 
         private Animator anim;
         private float horizontalMovement = 0f;
-        private bool isShooting = false;
         private bool isJumping = false;
         private bool isFalling = false;
         private bool isClimbing = false;
@@ -59,7 +58,6 @@ namespace PlatfromMania.Core
         private void HandleInput()
         {
             horizontalMovement = InputManager.Instance.GetHorizontalMovement();
-            isShooting = InputManager.Instance.GetMouseButton();
         }
 
         private void MovementAnimation()
