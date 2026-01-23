@@ -5,11 +5,10 @@ using System;
 
 namespace PlatfromMania.Core
 {
-    public class HealthComponent : MonoBehaviour, IDamageable, IHealable
+    public class HealthComponent : MonoBehaviour, IDamageable, IHealable, IHealth
     {
         [SerializeField] private float maxHealth = 100f;
         [SerializeField] private float startingHealth = 100f;
-
         public float CurrentHealth { get; private set; }
         public float MaxHealth => maxHealth;
         public bool IsAlive => CurrentHealth > 0;
@@ -19,6 +18,11 @@ namespace PlatfromMania.Core
         private void Awake()
         {
             CurrentHealth = startingHealth;
+        }
+
+        private void Update()
+        {
+            DebugHealth();
         }
 
         public void TakeDamage(float damage)
@@ -49,6 +53,11 @@ namespace PlatfromMania.Core
         private void Die()
         {
             //event
+        }
+
+        public void DebugHealth()
+        {
+            Debug.Log(CurrentHealth);
         }
     }
 }

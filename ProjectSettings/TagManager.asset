@@ -11,11 +11,11 @@ TagManager:
   - 
   - Water
   - UI
+  - Player
   - Ground
   - Background
   - Climbing
-  - 
-  - 
+  - Bullet
   - 
   - 
   - 
@@ -49,6 +49,9 @@ TagManager:
     locked: 0
   - name: Climbing
     uniqueID: 1888681489
+    locked: 0
+  - name: Checkpoint
+    uniqueID: 2561290503
     locked: 0
   - name: Player
     uniqueID: 905518319

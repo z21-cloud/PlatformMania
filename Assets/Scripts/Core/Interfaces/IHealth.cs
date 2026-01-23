@@ -4,11 +4,11 @@ using System.Collections.Generic;
 
 namespace PlatfromMania.Core
 {
-    public interface IHealable
+    public interface IHealth
     {
-        public void Heal(float value);
         public float CurrentHealth { get; }
-        bool IsAlive { get; }
+        public bool IsAlive { get; }
+
+        public void DebugHealth();
     }
 }
-
