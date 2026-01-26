@@ -9,6 +9,6 @@ namespace PlatfromMania.Core
         public float CurrentHealth { get; }
         public bool IsAlive { get; }
 
-        public void DebugHealth();
+        //public void DebugHealth();
     }
 }

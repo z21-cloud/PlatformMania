@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace PlatfromMania.Core
 {
-    public class WaterComponent : MonoBehaviour, IKillZone
+    public class KillZoneComponent : MonoBehaviour, IKillZone
     {
-        [Header("Water Setup")]
+        [Header("Kill Zone Setup")]
         [SerializeField] private float damage = 25f;
         private void OnTriggerEnter2D(Collider2D collision)
         {
@@ -15,9 +15,9 @@ namespace PlatfromMania.Core
                 damageable.TakeDamage(damage);
             }
 
-            if(collision.TryGetComponent<PlayerDeathHandler>(out var deathHandler))
+            if(collision.TryGetComponent<PlayerRespawnManager>(out var handleDeath))
             {
-                deathHandler.HandleDeath();
+                handleDeath.KillZoneHit();
             }
         }
     }

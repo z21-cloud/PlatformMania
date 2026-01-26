@@ -2,20 +2,18 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace PlatfromMania.Core
+public class Checkpoint : MonoBehaviour, ICheckpoint
 {
-    public class Checkpoint : MonoBehaviour, ICheckpoint
-    {
-        [SerializeField] private Transform respawnPoint;
-        public Transform RespawnPoint => respawnPoint;
+    [SerializeField] private Transform checkpointTransform;
+    public Transform CheckpointTransform => checkpointTransform;
 
-        private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.CompareTag("Player"))
         {
-            if (collision.CompareTag("Player"))
-            {
-                CheckpointSystem.Instance.SetCheckpoint(this);
-            }
+            //translate checkpoint transform;
+            Debug.Log("Checkpoint activated");
+            CheckpointService.Instance.SetCheckpoint(this);
         }
     }
 }
-

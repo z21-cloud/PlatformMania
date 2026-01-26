@@ -7,21 +7,14 @@ namespace PlatfromMania.Core
 {
     public class Enemy : MonoBehaviour
     {
-        public float CurrentHealth => throw new System.NotImplementedException();
+        private EnemyPool enemyPool;
 
-        public bool IsAlive => throw new System.NotImplementedException();
-
-        void Start()
+        private void Start()
         {
 
         }
 
-        void Update()
-        {
-
-        }
-
-        public void TakeDamage(float damage)
+        public void ResetState()
         {
             throw new System.NotImplementedException();
         }
