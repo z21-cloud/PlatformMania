@@ -12,6 +12,11 @@ namespace PlatfromMania.Services
             return Physics2D.OverlapCircle(position, radius, mask);
         }
 
+        public bool CheckRaycast(Vector2 position, Vector2 vector, float distance, LayerMask mask)
+        {
+            return Physics2D.Raycast(position, vector, distance, mask);
+        }
+
         public static void DrawDebugCircle(Vector2 position, float radius, Color color)
         {
             Gizmos.color = color;

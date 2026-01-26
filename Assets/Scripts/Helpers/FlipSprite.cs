@@ -7,30 +7,43 @@ namespace PlatfromMania.Helpers
 {
     public class FlipSprite : MonoBehaviour
     {
-        [Header("Player Movement Checker")]
-        [SerializeField] private PlayerMovement movement;
-        
+        [Header("Sprite flip setup")]
+        [SerializeField, Tooltip("Component Implementing IDirectionProvider")]
+        private MonoBehaviour directionProvider;
+        private IDirectionProvider provider;
         private bool isFacingRight = true;
-
-        private void OnEnable()
+        private void Awake()
         {
-            movement.OnSpriteFliped += UpdateSpriteFlip;
+            provider = directionProvider as IDirectionProvider;
+
+            if(provider == null)
+            {
+                Debug.LogError($"{name} : direction provider does not implement IDirectionProvdier", this);
+                enabled = false;
+            }
+        }
+
+        private void Update()
+        {
+            UpdateSpriteFlip(provider.Direction);
         }
 
         private void UpdateSpriteFlip(float value)
         {
+            if (value == 0) return;
+
             if (isFacingRight && value < 0 || !isFacingRight && value > 0)
             {
-                isFacingRight = !isFacingRight;
-                Vector3 ls = transform.localScale;
-                ls.x *= -1f;
-                transform.localScale = ls;
+                Flip();
             }
         }
 
-        private void OnDisable()
+        private void Flip()
         {
-            movement.OnSpriteFliped -= UpdateSpriteFlip;
+            isFacingRight = !isFacingRight;
+            Vector3 ls = transform.localScale;
+            ls.x *= -1f;
+            transform.localScale = ls;
         }
     }
 }

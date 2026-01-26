@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System;
 using PlatfromMania.Managers;
 using PlatfromMania.Services;
+using PlatfromMania.Helpers;
 
 namespace PlatfromMania.Core
 {
-    public class PlayerMovement : MonoBehaviour
+    public class PlayerMovement : MonoBehaviour, IDirectionProvider
     {
         [Header("Movement settings")]
         [SerializeField] private float speed = 5f;
@@ -61,12 +62,13 @@ namespace PlatfromMania.Core
         private bool isGrounded;
         private bool isClimbing;
 
-        public event Action<float> OnSpriteFliped;
+        public float Direction => horizontalMovement;
+
         public event Action<bool> OnPlayerJumped;
         public event Action<bool> OnPlayerFalling;
         public event Action<bool> OnPlayerClimbing;
 
-        private void Start()
+        private void Awake()
         {
             groundCheckService = new GroundCheckService();
             wallCheckService = new WallCheckService();
@@ -254,7 +256,6 @@ namespace PlatfromMania.Core
         private void MoveHorizontal()
         {
             horizontalMovement = InputManager.Instance.GetHorizontalMovement();
-            OnSpriteFliped?.Invoke(horizontalMovement);
             rb.linearVelocityX = horizontalMovement * speed;
         }
 
