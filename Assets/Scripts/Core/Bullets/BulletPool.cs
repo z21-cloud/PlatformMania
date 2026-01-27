@@ -14,7 +14,7 @@ namespace PlatfromMania.Core
 
         private ObjectPooling<Bullet> pool;
 
-        private void Start()
+        private void Awake()
         {
             pool = new ObjectPooling<Bullet>(
                 bullet, 

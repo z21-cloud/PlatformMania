@@ -7,100 +7,29 @@ using System;
 
 namespace PlatfromMania.Core
 {
-    public class Enemy : MonoBehaviour, IDirectionProvider
+    public class Enemy : MonoBehaviour
     {
-        private enum EnemyState
-        {
-            Patrol,
-            Chase
-        }
-        [SerializeField] protected Vector2 moveTrajectory = new Vector2(2f, 2f);
-        [SerializeField] protected float timeBetweenSteps = 0.25f;
-
-        [Header("Ground Check Setup")]
-        [SerializeField] private Transform groundCheckTransform;
-        [SerializeField] private float groundCheckDistance = 0.5f;
-        [SerializeField] private LayerMask groundMask;
-
-        private GroundCheckService groundCheck;
-        private EnemyPool enemyPool;
-        private Rigidbody2D rb;
-
-        private float direction = 1f;
-        private float timer = 0;
-        private bool isGrounded;
-        private EnemyState state = EnemyState.Patrol;
-        public float Direction => direction;
+        [Header("Enemy setup")]
+        [SerializeField] private HealthComponent health;
+        [SerializeField] private float damage = 25f;
 
         private void Awake()
         {
-            groundCheck = new GroundCheckService();
-            rb = GetComponent<Rigidbody2D>();
+            health = GetComponent<HealthComponent>();
+            health.OnDeath += HandleDeath;
         }
 
-
-        private void Update()
+        private void HandleDeath()
         {
-            isGrounded = groundCheck.CheckRaycast(
-                groundCheckTransform.position, 
-                Vector2.down, 
-                groundCheckDistance, 
-                groundMask);
+            gameObject.SetActive(false);
+        }
 
-            timer += Time.deltaTime;
-            if(timer >= timeBetweenSteps)
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if(collision.TryGetComponent<IDamageable>(out var damageable))
             {
-                Act();
-                timer = 0;
+                damageable.TakeDamage(damage);
             }
-        }
-
-        private void Act()
-        {
-            switch(state)
-            {
-                case EnemyState.Patrol:
-                    Patrol();
-                    break;
-                case EnemyState.Chase:
-                    Chase();
-                    break;
-            }
-        }
-
-        private void Chase()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void Patrol()
-        {
-            if(!isGrounded)
-            {
-                direction *= -1f;
-            }
-
-            Jump(direction);
-        }
-
-        private void Jump(float dir)
-        {
-            rb.linearVelocity = new Vector2(dir * moveTrajectory.x, moveTrajectory.y);
-        }
-
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = Color.red;
-
-            Vector3 start = transform.position;
-            Vector3 end = start + new Vector3(
-                direction * moveTrajectory.x,
-                moveTrajectory.y,
-                0
-            );
-
-            Gizmos.DrawLine(start, end);
-            Gizmos.DrawSphere(end, 0.1f);
         }
     }
 }

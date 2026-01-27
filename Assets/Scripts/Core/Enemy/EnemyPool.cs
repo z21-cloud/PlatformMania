@@ -13,8 +13,7 @@ namespace PlatfromMania.Core
         [SerializeField] private int enemyPoolSize = 10;
 
         private ObjectPooling<Enemy> pool;
-
-        private void Start()
+        private void Awake()
         {
             pool = new ObjectPooling<Enemy>(
                 enemy,
