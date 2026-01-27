@@ -8,7 +8,7 @@ namespace PlatfromMania.Services
     {
         public ResetService ResetService { get; private set; }
 
-        private void OnEnable()
+        private void Awake()
         {
             ResetService = new ResetService();
         }

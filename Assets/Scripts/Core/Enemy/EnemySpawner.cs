@@ -13,15 +13,6 @@ namespace PlatfromMania.Core
         [SerializeField] private EnemyPool pool;
         [SerializeField] private List<EnemySpawnPoint> spawnPoints;
 
-        private void OnEnable()
-        {
-        }
-
-        private void OnDisable()
-        {
-            levelContext.ResetService.Unregister(this);
-        }
-
         private void Start()
         {
             levelContext.ResetService.Register(this);
@@ -57,6 +48,11 @@ namespace PlatfromMania.Core
                 pool.Release(s.CurrentEnemy);
                 s.Clear();
             }
+        }
+
+        private void OnDisable()
+        {
+            levelContext.ResetService.Unregister(this);
         }
     }
 }

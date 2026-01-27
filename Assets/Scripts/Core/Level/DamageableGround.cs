@@ -9,7 +9,7 @@ namespace PlatfromMania.Helpers
     {
         public void TakeDamage(float damage)
         {
-            Debug.Log("Bullet destroyed");
+            //Debug.Log("Bullet destroyed");
             //effects
         }
     }
