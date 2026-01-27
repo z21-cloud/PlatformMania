@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 773317322292940586}
   - component: {fileID: 4493369451369661941}
   - component: {fileID: 2404080504867684771}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Goober (Enemy)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -261,7 +261,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4444336392656619404}
   - component: {fileID: 7930528748325342040}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: hitboxCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -338,7 +338,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3751275150847957766}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: groundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
