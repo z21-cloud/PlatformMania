@@ -33,9 +33,7 @@ namespace PlatfromMania.Core
         }
         public void Release(Enemy enemy)
         {
-            Debug.Log($"Pool.Release: Enemy health BEFORE = {enemy.GetComponent<HealthComponent>().CurrentHealth}");
             pool.Release(enemy);
-            Debug.Log($"Pool.Release: Enemy health AFTER = {enemy.GetComponent<HealthComponent>().CurrentHealth}");
         }
     }
 }

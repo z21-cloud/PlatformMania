@@ -54,19 +54,19 @@ namespace PlatfromMania.Core
 
         public void ResetToMaxHealth()
         {
-            Debug.Log($"HealthComponent: Health was updated => {MaxHealth}");
+            //Debug.Log($"HealthComponent: Health was updated => {MaxHealth}");
             CurrentHealth = MaxHealth;
         }
         private void Die()
         {
             //event
-            Debug.Log($"Health Component: Death method");
+            //Debug.Log($"Health Component: Death method");
             OnDeath?.Invoke();
         }
 
         public void DebugHealth()
         {
-            //Debug.Log(CurrentHealth);
+            Debug.Log($"{gameObject.name}: CurrentHealth - {CurrentHealth}");
         }
     }
 }
