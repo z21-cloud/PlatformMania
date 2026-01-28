@@ -34,8 +34,19 @@ namespace PlatfromMania.Core
 
         private void RespawnSafePosition()
         {
-            transform.position = positionHistory.SafePosition;
-            Debug.Log("Player Respawn Manager: safe position");
+            //transform.position = positionHistory.SafePosition;
+            //Debug.Log("Player Respawn Manager: safe position");
+
+            if (!CheckpointService.Instance.HasCheckpoint())
+            {
+                transform.position = startPosition;
+            }
+            else
+            {
+                transform.position = CheckpointService.Instance.GetCheckpointPosition();
+            }
+            levelContext.ResetService.ResetAll();
+            Debug.Log("Player Respawn Manager: soft death");
         }
 
         private void OnEnable()
@@ -58,7 +69,6 @@ namespace PlatfromMania.Core
             {
                 transform.position = CheckpointService.Instance.GetCheckpointPosition();
             }
-            health.ResetToMaxHealth();
             levelContext.ResetService.ResetAll();
             Debug.Log("Player Respawn Manager: soft death");
         }

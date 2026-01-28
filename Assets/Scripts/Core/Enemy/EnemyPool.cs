@@ -1,11 +1,11 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using PlatfromMania.Helpers;
 
 namespace PlatfromMania.Core
 {
-    public class EnemyPool : MonoBehaviour
+    public class EnemyPool : MonoBehaviour, IPool<Enemy>
     {
         [Header("Pool settings")]
         [SerializeField] private Enemy enemy;
@@ -21,8 +21,24 @@ namespace PlatfromMania.Core
                 enemyTransformParent);
         }
 
-        public Enemy Get() => pool.Get();
-        public void Release(Enemy enemy) => pool.Release(enemy);
+        public Enemy Get()
+        {
+            var enemy = pool.Get();
+            if(enemy is IResettable resettable)
+            {
+                resettable.ResetState();
+            }
+
+            return enemy;
+        }
+        public void Release(Enemy enemy)
+        {
+            Debug.Log($"Pool.Release: Enemy health BEFORE = {enemy.GetComponent<HealthComponent>().CurrentHealth}");
+            pool.Release(enemy);
+            Debug.Log($"Pool.Release: Enemy health AFTER = {enemy.GetComponent<HealthComponent>().CurrentHealth}");
+        }
     }
 }
+
+
 

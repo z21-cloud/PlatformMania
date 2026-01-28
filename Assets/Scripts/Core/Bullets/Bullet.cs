@@ -63,6 +63,7 @@ namespace PlatfromMania.Core
         {
             if (collision.TryGetComponent<IDamageable>(out var damageable))
             {
+                Debug.Log(collision.gameObject.name);
                 damageable.TakeDamage(damage);
                 ReturnToPool();
             }

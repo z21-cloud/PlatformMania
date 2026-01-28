@@ -13,19 +13,27 @@ namespace PlatfromMania.Core
         [SerializeField] private EnemyPool pool;
         [SerializeField] private List<EnemySpawnPoint> spawnPoints;
 
+        private SpawnController<Enemy> controller;
+
+        private void Awake()
+        {
+            var points = new List<ISpawnPoint<Enemy>>(spawnPoints);
+            controller = new SpawnController<Enemy>(
+                pool, 
+                points,
+                onSpawn: Callback
+                );
+        }
+
+        private void Callback(Enemy enemy)
+        {
+            enemy.Initialize(this);
+        }
+
         private void Start()
         {
             levelContext.ResetService.Register(this);
-            SpawnAll();
-        }
-
-        public void SpawnAll()
-        {
-            foreach (var s in spawnPoints)
-            {
-                var enemy = pool.Get();
-                s.Assign(enemy);
-            }
+            controller.SpawnAll();
         }
 
         public void Release(Enemy enemy)
@@ -35,19 +43,8 @@ namespace PlatfromMania.Core
 
         public void ResetState()
         {
-            DespawnAll();
-            SpawnAll();
-        }
-
-        private void DespawnAll()
-        {
-            foreach (var s in spawnPoints)
-            {
-                if (s.CurrentEnemy == null) continue;
-
-                pool.Release(s.CurrentEnemy);
-                s.Clear();
-            }
+            controller.DespawnAll();
+            controller.SpawnAll();
         }
 
         private void OnDisable()

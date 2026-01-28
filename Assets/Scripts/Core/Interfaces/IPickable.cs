@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public interface IResettable
+public interface IPickable
 {
-    public void ResetState() { }
+    public void PickUp(IPickableCollector collector) { }
 }

@@ -21,10 +21,10 @@ namespace PlatfromMania.Core
             CurrentHealth = startingHealth;
         }
 
-        /*private void Update()
+        private void Update()
         {
             DebugHealth();
-        }*/
+        }
 
         public void TakeDamage(float damage)
         {
@@ -64,10 +64,10 @@ namespace PlatfromMania.Core
             OnDeath?.Invoke();
         }
 
-        /*public void DebugHealth()
+        public void DebugHealth()
         {
-            Debug.Log(CurrentHealth);
-        }*/
+            //Debug.Log(CurrentHealth);
+        }
     }
 }
 

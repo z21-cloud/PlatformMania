@@ -7,11 +7,18 @@ using System;
 
 namespace PlatfromMania.Core
 {
-    public class Enemy : MonoBehaviour
+    public class Enemy : MonoBehaviour, IResettable
     {
         [Header("Enemy setup")]
         [SerializeField] private HealthComponent health;
         [SerializeField] private float damage = 25f;
+
+        private EnemySpawner enemySpawn;
+
+        public void Initialize(EnemySpawner spawner)
+        {
+            enemySpawn = spawner;
+        }
 
         private void Awake()
         {
@@ -21,7 +28,12 @@ namespace PlatfromMania.Core
 
         private void HandleDeath()
         {
-            gameObject.SetActive(false);
+            enemySpawn?.Release(this);
+        }
+
+        public void ResetState()
+        {
+            health.ResetToMaxHealth();
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
