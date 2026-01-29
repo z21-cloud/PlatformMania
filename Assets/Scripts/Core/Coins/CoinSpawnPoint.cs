@@ -2,22 +2,26 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class CoinSpawnPoint : MonoBehaviour, ISpawnPoint<Coin>
+namespace PlatfromMania.Core
 {
-    public Coin Current { get; private set; }
-
-    public void Assign(Coin coin)
+    public class CoinSpawnPoint : MonoBehaviour, ISpawnPoint<Coin>
     {
-        Current = coin;
-        coin.transform.SetPositionAndRotation(
-            transform.position,
-            transform.rotation
-        );
-    }
+        public Coin Current { get; private set; }
 
-    public void Clear()
-    {
-        Current = null;
+        public void Assign(Coin coin)
+        {
+            Current = coin;
+            coin.transform.SetPositionAndRotation(
+                transform.position,
+                transform.rotation
+            );
+        }
+
+        public void Clear()
+        {
+            Current = null;
+        }
     }
 }
+
 

@@ -2,7 +2,11 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public interface IPickableCollector
+namespace PlatfromMania.Core
 {
-    public void CollectCoint(int amount);
+    public interface IPickableCollector
+    {
+        public void CollectCoint(int amount);
+    }
 }
+

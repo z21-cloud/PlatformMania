@@ -4,24 +4,28 @@ using System.Collections.Generic;
 using PlatfromMania.Helpers;
 using PlatfromMania.Core;
 
-public class CoinPool : MonoBehaviour, IPool<Coin>
+namespace PlatfromMania.Core
 {
-    [SerializeField] private Coin coin;
-    [SerializeField] private Transform coinsParent;
-    [SerializeField] private int poolSize = 10;
-
-    private ObjectPooling<Coin> pool;
-
-    private void Awake()
+    public class CoinPool : MonoBehaviour, IPool<Coin>
     {
-        pool = new ObjectPooling<Coin>(
-            coin,
-            poolSize,
-            coinsParent);
+        [SerializeField] private Coin coin;
+        [SerializeField] private Transform coinsParent;
+        [SerializeField] private int poolSize = 10;
+
+        private ObjectPooling<Coin> pool;
+
+        private void Awake()
+        {
+            pool = new ObjectPooling<Coin>(
+                coin,
+                poolSize,
+                coinsParent);
+        }
+
+        public Coin Get() => pool.Get();
+
+        public void Release(Coin coin) => pool.Release(coin);
     }
-
-    public Coin Get() => pool.Get();
-
-    public void Release(Coin coin) => pool.Release(coin);
 }
+
 

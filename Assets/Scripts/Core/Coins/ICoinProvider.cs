@@ -3,9 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-public interface ICoinProvider
+namespace PlatfromMania.Core
 {
-    public int Coins { get; }
+    public interface ICoinProvider
+    {
+        public int Coins { get; }
 
-    public event Action<int> OnCoinsChanged;
+        public event Action<int> OnCoinsChanged;
+    }
 }
+

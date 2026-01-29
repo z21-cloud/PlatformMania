@@ -2,7 +2,11 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public interface IDirectionProvider
+namespace PlatfromMania.Core
 {
-    public float Direction { get; }
+    public interface IDirectionProvider
+    {
+        public float Direction { get; }
+    }
 }
+

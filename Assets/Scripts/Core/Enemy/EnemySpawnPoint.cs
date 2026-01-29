@@ -1,24 +1,27 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using PlatfromMania.Core;
 
 
-public class EnemySpawnPoint : MonoBehaviour, ISpawnPoint<Enemy>
+namespace PlatfromMania.Core
 {
-    public Enemy Current { get; private set; }
-
-    public void Assign(Enemy enemy)
+    public class EnemySpawnPoint : MonoBehaviour, ISpawnPoint<Enemy>
     {
-        Current= enemy;
-        enemy.transform.SetPositionAndRotation(
-            transform.position,
-            transform.rotation
-        );
-    }
+        public Enemy Current { get; private set; }
 
-    public void Clear()
-    {
-        Current = null;
+        public void Assign(Enemy enemy)
+        {
+            Current = enemy;
+            enemy.transform.SetPositionAndRotation(
+                transform.position,
+                transform.rotation
+            );
+        }
+
+        public void Clear()
+        {
+            Current = null;
+        }
     }
 }
+

@@ -2,8 +2,12 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public interface IResettable
+namespace PlatfromMania.Core
 {
-    public void ResetState() { }
+    public interface IResettable
+    {
+        public void ResetState() { }
+    }
 }
+
 

@@ -2,7 +2,11 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public interface ICheckpoint
+namespace PlatfromMania.Core
 {
-    public Transform CheckpointTransform { get; }
+    public interface ICheckpoint
+    {
+        public Transform CheckpointTransform { get; }
+    }
 }
+

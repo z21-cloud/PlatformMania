@@ -62,6 +62,9 @@ TagManager:
   - name: Interactables
     uniqueID: 2142489397
     locked: 0
+  - name: Door
+    uniqueID: 348044145
+    locked: 0
   - name: Player
     uniqueID: 905518319
     locked: 0

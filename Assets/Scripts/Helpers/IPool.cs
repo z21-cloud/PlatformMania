@@ -2,8 +2,12 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public interface IPool<T>
+namespace PlatfromMania.Helpers
 {
-    public T Get();
-    public void Release(T obj);
+    public interface IPool<T>
+    {
+        public T Get();
+        public void Release(T obj);
+    }
 }
+

@@ -2,35 +2,41 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using PlatfromMania.UI;
+using PlatfromMania.Core;
 
-public class CheckpointService : MonoBehaviour, IMessageProvider
+namespace PlatfromMania.Services
 {
-    public static CheckpointService Instance;
-    private ICheckpoint currentCheckpoint;
-
-    public event Action<string> OnMessageProvider;
-
-    private void Awake()
+    public class CheckpointService : MonoBehaviour, IMessageProvider
     {
-        if(Instance != this && Instance != null)
+        public static CheckpointService Instance;
+        private ICheckpoint currentCheckpoint;
+
+        public event Action<string> OnMessageProvider;
+
+        private void Awake()
         {
-            Destroy(gameObject);
-            return;
+            if (Instance != this && Instance != null)
+            {
+                Destroy(gameObject);
+                return;
+            }
+
+            Instance = this;
         }
 
-        Instance = this;
-    }
+        public void SetCheckpoint(ICheckpoint checkpoint)
+        {
+            currentCheckpoint = checkpoint;
+            OnMessageProvider?.Invoke("Checkpoint Activated");
+        }
 
-    public void SetCheckpoint(ICheckpoint checkpoint)
-    {
-        currentCheckpoint = checkpoint;
-        OnMessageProvider?.Invoke("Checkpoint Activated");
-    }
+        public Vector3 GetCheckpointPosition()
+        {
+            return currentCheckpoint.CheckpointTransform.position;
+        }
 
-    public Vector3 GetCheckpointPosition()
-    {
-        return currentCheckpoint.CheckpointTransform.position;
+        public bool HasCheckpoint() => currentCheckpoint.CheckpointTransform.position != Vector3.zero;
     }
-
-    public bool HasCheckpoint() => currentCheckpoint.CheckpointTransform.position != Vector3.zero;
 }
+

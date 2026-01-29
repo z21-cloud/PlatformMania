@@ -2,6 +2,8 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+namespace PlatfromMania.Core
+{
     public class Coin : MonoBehaviour, IPickable
     {
         [SerializeField] private int value = 10;
@@ -12,4 +14,6 @@ using System.Collections.Generic;
             gameObject.SetActive(false);
         }
     }
+}
+
 
