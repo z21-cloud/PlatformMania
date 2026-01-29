@@ -2,7 +2,10 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public interface IDecreaseCoins
+namespace PlatfromMania.Core
 {
-    public void DecreaseCoins(int value) { }
+    public interface IDecreaseCoins
+    {
+        public void DecreaseCoins(int value) { }
+    }
 }

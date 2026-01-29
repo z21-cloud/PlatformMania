@@ -4,15 +4,19 @@ using System.Collections.Generic;
 using PlatfromMania.Core;
 using System;
 
-public class Door : MonoBehaviour
+namespace PlatfromMania.Core
 {
-    [SerializeField] private int payment = 50;
-
-    private void OnTriggerEnter2D(Collider2D collision)
+    public class Door : MonoBehaviour
     {
-        if(collision.TryGetComponent<IDecreaseCoins>(out var coinProvider))
+        [SerializeField] private int payment = 50;
+
+        private void OnTriggerEnter2D(Collider2D collision)
         {
-            coinProvider.DecreaseCoins(payment);
+            if (collision.TryGetComponent<IDecreaseCoins>(out var coinProvider))
+            {
+                coinProvider.DecreaseCoins(payment);
+            }
         }
     }
 }
+
