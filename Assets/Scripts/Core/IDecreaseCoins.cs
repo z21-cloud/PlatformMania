@@ -7,5 +7,5 @@ namespace PlatfromMania.Core
     public interface IDecreaseCoins
     {
         public void DecreaseCoins(int value) { }
-    }
+    }   
 }
