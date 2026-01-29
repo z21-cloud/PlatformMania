@@ -36,7 +36,10 @@ namespace PlatfromMania.Services
             return currentCheckpoint.CheckpointTransform.position;
         }
 
-        public bool HasCheckpoint() => currentCheckpoint.CheckpointTransform.position != Vector3.zero;
+        public bool HasCheckpoint()
+        {
+            return currentCheckpoint.CheckpointTransform.position != Vector3.zero;
+        }
     }
 }
 
