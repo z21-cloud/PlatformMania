@@ -12,13 +12,16 @@ namespace PlatfromMania.Core
         public float CurrentHealth { get; private set; }
         public float MaxHealth => maxHealth;
         public bool IsAlive => CurrentHealth > 0;
+        
         public event Action OnDeath;
+        public event Action<float> OnHealthChanged;
 
         private const float DEATH_THRESHOLD = 0;
 
         private void Awake()
         {
             CurrentHealth = startingHealth;
+            OnHealthChanged?.Invoke(CurrentHealth);
         }
 
         private void Update()
@@ -32,6 +35,7 @@ namespace PlatfromMania.Core
 
             CurrentHealth -= damage;
             CurrentHealth = Mathf.Max(CurrentHealth, DEATH_THRESHOLD);
+            OnHealthChanged?.Invoke(CurrentHealth);
 
             //event;
             Debug.Log($"Health Component: {CurrentHealth}");
@@ -48,7 +52,8 @@ namespace PlatfromMania.Core
 
             CurrentHealth += amount;
             CurrentHealth = Mathf.Max(CurrentHealth, maxHealth);
-
+            
+            OnHealthChanged?.Invoke(CurrentHealth);
             //event
         }
 
@@ -56,6 +61,7 @@ namespace PlatfromMania.Core
         {
             //Debug.Log($"HealthComponent: Health was updated => {MaxHealth}");
             CurrentHealth = MaxHealth;
+            OnHealthChanged?.Invoke(CurrentHealth);
         }
         private void Die()
         {

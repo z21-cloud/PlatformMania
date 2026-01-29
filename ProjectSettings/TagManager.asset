@@ -47,6 +47,9 @@ TagManager:
   - name: Main
     uniqueID: 233486949
     locked: 0
+  - name: Damageable
+    uniqueID: 2500433485
+    locked: 0
   - name: Climbing
     uniqueID: 1888681489
     locked: 0
