@@ -7,14 +7,17 @@ namespace PlatfromMania.Helpers
     public class ObjectPooling<T> where T : MonoBehaviour
     {
         private T prefab;
-        private List<T> objects;
+        private Stack<T> available;
+        private List<T> allObjects;
         private Transform parent;
         
         public ObjectPooling(T prefab, int initialSize = 10, Transform parent = null)
         {
             this.prefab = prefab;
             this.parent = parent;
-            objects = new List<T>(initialSize);
+            
+            allObjects = new List<T>(initialSize);
+            available = new Stack<T>(initialSize);
 
             for (int i = 0; i < initialSize; i++)
             {
@@ -26,22 +29,24 @@ namespace PlatfromMania.Helpers
         {
             var obj = GameObject.Instantiate(prefab, parent);
             obj.gameObject.SetActive(false);
-            objects.Add(obj);
+            
+            available.Push(obj);
+            allObjects.Add(obj);
+            
             return obj;
         }
 
         public T Get()
         {
-            foreach (T obj in objects)
+            if(available.Count > 0)
             {
-                if (obj != null && !obj.gameObject.activeInHierarchy)
-                {
-                    obj.gameObject.SetActive(true);
-                    return obj;
-                }
+                var obj = available.Pop();
+                obj.gameObject.SetActive(true);
+                return obj;
             }
 
             var newObj = CreateNewObject();
+            available.Pop();
             newObj.gameObject.SetActive(true);
             return newObj;
         }
@@ -50,9 +55,23 @@ namespace PlatfromMania.Helpers
         {
             if (obj == null) return;
             obj.gameObject.SetActive(false);
-            if (!objects.Contains(obj))
+            if (!available.Contains(obj))
             {
-                objects.Add(obj);
+                available.Push(obj);
+            }
+        }
+
+        public void Clear()
+        {
+            foreach (var obj in allObjects)
+            {
+                if(obj != null)
+                {
+                    GameObject.Destroy(obj.gameObject);
+                }
+
+                available.Clear();
+                allObjects.Clear();
             }
         }
     }

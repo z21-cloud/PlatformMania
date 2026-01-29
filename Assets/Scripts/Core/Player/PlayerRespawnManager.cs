@@ -15,27 +15,16 @@ namespace PlatfromMania.Core
         [SerializeField] private LevelContext levelContext;
         [Header("Start position set-up")]
         [SerializeField] private Vector3 startPosition;
+
+        private PlayerController controller;
         private HealthComponent health;
-        private PositionHistory positionHistory;
         private void Awake()
         {
             health = GetComponent<HealthComponent>();
-            positionHistory = GetComponent<PositionHistory>();
+            controller = GetComponent<PlayerController>();
 
             if (startPosition != Vector3.zero) return;
             startPosition = transform.position;
-        }
-
-        public void KillZoneHit()
-        {
-            if (!health.IsAlive) return;
-            RespawnSafePosition();
-        }
-
-        private void RespawnSafePosition()
-        {
-            transform.position = positionHistory.SafePosition;
-            Debug.Log("Player Respawn Manager: safe position");
         }
 
         private void OnEnable()
@@ -58,6 +47,8 @@ namespace PlatfromMania.Core
             {
                 transform.position = CheckpointService.Instance.GetCheckpointPosition();
             }
+
+            controller.ResetCoins();
             health.ResetToMaxHealth();
             levelContext.ResetService.ResetAll();
             Debug.Log("Player Respawn Manager: soft death");

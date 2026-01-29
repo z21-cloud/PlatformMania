@@ -7,6 +7,12 @@ namespace PlatfromMania.Core
     public class PlayerController : MonoBehaviour, IPickableCollector
     {
         public int Coins { get; private set; }
+
+        public void ResetCoins()
+        {
+            Coins = 0;
+        }
+
         public void CollectCoint(int amount)
         {
             Coins += amount;
