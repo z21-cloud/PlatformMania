@@ -38,7 +38,7 @@ namespace PlatfromMania.Services
 
         public bool HasCheckpoint()
         {
-            return currentCheckpoint.CheckpointTransform.position != Vector3.zero;
+            return currentCheckpoint != null;
         }
     }
 }
