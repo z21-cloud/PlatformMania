@@ -74,14 +74,12 @@ namespace PlatfromMania.UI
             if (healthProvider != null)
             {
                 healthProvider.OnHealthChanged += OnHealthChanged;
-                // Инициализируем начальное значение
                 healthView?.UpdateHealth(healthProvider.CurrentHealth);
             }
 
             if (coinsProvider != null)
             {
                 coinsProvider.OnCoinsChanged += OnCoinsChanged;
-                // Инициализируем начальное значение
                 coinsView?.UpdateCoins(coinsProvider.Coins);
             }
 
