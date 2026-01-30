@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using PlatfromMania.Core;
+using PlatfromMania.UI;
 using System;
 
 namespace PlatfromMania.Core
